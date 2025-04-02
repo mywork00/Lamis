@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدفع</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: inline-block;
+            width: 80%;
+            max-width: 400px;
+        }
+        .important {
+            color: red;
+            font-weight: bold;
+        }
+        input, button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+    <script>
+        function getQueryParam(param) {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param) || "خدمة غير محددة";
+        }
+
+        function sendToWhatsApp() {
+            var serviceName = getQueryParam("service");
+            var name = document.getElementById("name").value;
+            var phone = document.getElementById("phone").value;
+            var transaction = document.getElementById("transaction").value;
+            var receipt = document.getElementById("receipt").files[0];
+
+            if (!name || !phone || !transaction || !receipt) {
+                alert("يرجى ملء جميع الحقول وإرفاق الإيصال.");
+                return;
+            }
+
+            var waLink = "https://wa.me/966531331085?text=" +
+                "📌 *طلب تأكيد دفع*\n" +
+                "🛍 *الخدمة المطلوبة:* " + serviceName + "\n" +
+                "👤 *الاسم:* " + name + "\n" +
+                "📞 *رقم الواتس:* " + phone + "\n" +
+                "🔢 *رقم العملية:* " + transaction + "\n" +
+                "🖼  رجاء ارفق اي ملاحضات او شروط لطلبك ليتم تاكيد طلبك نهاىيا  وسيتم التواصل معك خلال 24 ساعه فقط ";
+
+            window.open(waLink, "_blank");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var serviceName = getQueryParam("service");
+            document.getElementById("service-name").innerText = serviceName;
+        });
+    </script>
+</head>
+<body>
+    <h1>تفاصيل الدفع</h1>
+    <div class="container">
+        <p>يرجى تحويل المبلغ إلى حساب بنك الرياض:</p>
+        <p><strong>رقم الحساب:</strong> 3020000002263623099940</p>
+        <p><strong>رقم الآيبان:</strong> <span class="important">IBAN: SA3020000002263623099940</span></p>
+        <p>الخدمة المطلوبة: <strong id="service-name"></strong></p>
+        <p>بعد السداد، يرجى إدخال البيانات التالية وإرسال الطلب عبر الواتساب:</p>
+
+        <input type="text" id="name" placeholder="الاسم">
+        <input type="tel" id="phone" placeholder="رقم الواتس">
+        <input type="text" id="transaction" placeholder="رقم العملية">
+        <input type="file" id="receipt" accept="image/*,application/pdf">
+        <button onclick="sendToWhatsApp()">إرسال الطلب عبر الواتساب</button>
+    </div>
+    <a href="index.html">العودة إلى الصفحة الرئيسية</a>
+</body>
+</html>
